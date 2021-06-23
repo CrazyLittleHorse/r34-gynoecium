@@ -63,6 +63,10 @@ export class TransitService {
     const posts = convertedData.posts.post;
     const postsDto: PostsDto = { posts: [] };
 
+    if (posts === undefined) {
+      return postsDto;
+    }
+
     if (posts.length === undefined) {
       const post = posts['_attributes'];
       postsDto.posts.push(this.mapPost(post));
