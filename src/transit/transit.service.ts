@@ -45,12 +45,12 @@ export class TransitService {
   private mapPost(post): PostDto {
     const postType = this.getContentType(post.file_url);
     const postDto: PostDto = {
+      id: Number.parseInt(post.id),
       preview: post.preview_url,
       content: postType === 'image' ? post.sample_url : post.file_url,
-      type: postType,
-      id: post.id,
-      score: post.score,
+      contentType: postType,
       tags: post.tags.split(' '),
+      score: Number.parseInt(post.score),
     };
     return postDto;
   }
