@@ -7,6 +7,7 @@ async function bootstrap() {
   app.use(helmet());
   app.enableCors();
   const PORT = process.env.PORT || 3000;
+  console.log(`r34bff start on port: ${PORT}`);
   await app.listen(PORT);
 }
 bootstrap();
