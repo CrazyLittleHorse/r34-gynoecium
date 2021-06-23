@@ -7,10 +7,10 @@ export enum PostType {
 }
 
 export interface PostDto {
+  id: number;
   preview: string;
   content: string;
-  type: PostType;
-  id: 'number';
+  contentType: PostType;
   tags: [string];
   score: number;
 }
