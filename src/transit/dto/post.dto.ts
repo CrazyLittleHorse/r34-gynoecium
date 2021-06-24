@@ -11,6 +11,7 @@ export interface PostDto {
   preview: string;
   content: string;
   contentType: PostType;
+  contentHeight: number;
   tags: [string];
   score: number;
 }
