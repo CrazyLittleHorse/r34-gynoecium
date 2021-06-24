@@ -1,4 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
+import { SearchTagsDto } from './dto/search-tags.dto';
 import { TransitService } from './transit.service';
 
 @Controller('transit')
@@ -25,7 +26,7 @@ export class TransitController {
   }
 
   @Get('tags')
-  tags() {
-    return { result: true };
+  tags(@Query('q') q?: string) {
+    return this.transitService.searchTags(q);
   }
 }
