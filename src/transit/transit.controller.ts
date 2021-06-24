@@ -1,5 +1,4 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { SearchTagsDto } from './dto/search-tags.dto';
 import { TransitService } from './transit.service';
 
 @Controller('transit')
@@ -21,8 +20,8 @@ export class TransitController {
   }
 
   @Get('comments')
-  comments() {
-    return { result: true };
+  comments(@Query('post_id') postId: number) {
+    return this.transitService.getComments(postId);
   }
 
   @Get('tags')
