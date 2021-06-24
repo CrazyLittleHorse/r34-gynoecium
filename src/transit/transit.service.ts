@@ -4,6 +4,8 @@ import { ContentType } from './enums/content-type.enum';
 import * as convert from 'xml-js';
 import { PostDto, PostType } from './dto/post.dto';
 import * as path from 'path';
+import { SearchTagsDto } from './dto/search-tags.dto';
+import { TagDto } from './dto/tag.dto';
 
 @Injectable()
 export class TransitService {
@@ -89,5 +91,35 @@ export class TransitService {
     const res = await this.httpService.get(url).toPromise();
     const mappedData: PostsDto = this.mapPosts(res.data);
     return mappedData;
+  }
+
+  parsePostCount(rawTag: string): number {
+    const postCount: number = +/\d+/.exec(rawTag);
+    return postCount;
+  }
+
+  mapTag(tag: { label: string; value: string }): TagDto {
+    const tagDto: TagDto = {
+      name: tag.value,
+      postCount: this.parsePostCount(tag.label),
+    };
+    return tagDto;
+  }
+
+  mapTags(tags: [{ label: string; value: string }]): SearchTagsDto {
+    const tagsDto: SearchTagsDto = { tags: [] };
+    tags.forEach((tag) => {
+      const tagDto: TagDto = this.mapTag(tag);
+      tagsDto.tags.push(tagDto);
+    });
+    return tagsDto;
+  }
+
+  async searchTags(q = ''): Promise<SearchTagsDto> {
+    const tags = await this.httpService
+      .get(`https://rule34.xxx/autocomplete.php?q=${q}`)
+      .toPromise();
+    const tagsDto: SearchTagsDto = this.mapTags(tags.data);
+    return tagsDto;
   }
 }
