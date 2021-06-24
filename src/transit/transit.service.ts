@@ -6,6 +6,8 @@ import { PostDto, PostType } from './dto/post.dto';
 import * as path from 'path';
 import { SearchTagsDto } from './dto/search-tags.dto';
 import { TagDto } from './dto/tag.dto';
+import { CommentsDto } from './dto/comments.dto';
+import { CommentDto } from './dto/comment.dto';
 
 @Injectable()
 export class TransitService {
@@ -17,10 +19,13 @@ export class TransitService {
       limit?: number;
       pid?: number;
       tags?: string;
-      id?: 'number';
+      id?: number;
+      postId?: number;
+      q?: string;
     },
   ): string {
-    let url = `https://rule34.xxx//index.php?page=dapi&s=${contentType}&q=index`;
+    const host = 'https://rule34.xxx/';
+    let url = `${host}index.php?page=dapi&s=${contentType}&q=index`;
 
     if (contentType === ContentType.post) {
       if (queries.limit) {
@@ -36,6 +41,19 @@ export class TransitService {
         url += `&id=${queries.id}`;
       }
     }
+
+    if ((contentType = ContentType.comment)) {
+      if (queries.postId) {
+        url += `&post_id=${queries.postId}`;
+      }
+    }
+
+    if ((contentType = ContentType.tags)) {
+      if (queries.q) {
+        url = `${host}autocomplete.php?q=${queries.q}`;
+      }
+    }
+
     return url;
   }
 
@@ -116,10 +134,57 @@ export class TransitService {
   }
 
   async searchTags(q = ''): Promise<SearchTagsDto> {
-    const tags = await this.httpService
-      .get(`https://rule34.xxx/autocomplete.php?q=${q}`)
-      .toPromise();
+    const url = this.generateURL(ContentType.tags, { q });
+    const tags = await this.httpService.get(url).toPromise();
     const tagsDto: SearchTagsDto = this.mapTags(tags.data);
     return tagsDto;
+  }
+
+  mapComment(comment): CommentDto {
+    const commentDto: CommentDto = {
+      id: Number.parseInt(comment.id),
+      postId: Number.parseInt(comment.post_id),
+      content: comment.body,
+      author: comment.creator,
+      authorId: Number.parseInt(comment.creator_id),
+      createdAt: comment.created_at,
+    };
+    return commentDto;
+  }
+
+  mapComments(data: string): CommentsDto {
+    const convertedComments = JSON.parse(
+      convert.xml2json(data, {
+        compact: true,
+        spaces: 4,
+      }),
+    );
+
+    const comments = convertedComments.comments.comment;
+    const commentsDto: CommentsDto = { comments: [] };
+
+    if (comments === undefined) {
+      return commentsDto;
+    }
+
+    if (comments.length === undefined) {
+      const post = comments['_attributes'];
+      comments.posts.push(this.mapPost(post));
+      return commentsDto;
+    }
+
+    comments.forEach((comment) => {
+      const commentDto: CommentDto = this.mapComment(comment['_attributes']);
+      commentsDto.comments.push(commentDto);
+    });
+
+    return commentsDto;
+  }
+
+  async getComments(postId: number): Promise<CommentsDto> {
+    const url = this.generateURL(ContentType.comment, { postId });
+    const res = await this.httpService.get(url).toPromise();
+    const mappedComments: CommentsDto = this.mapComments(res.data);
+    return mappedComments;
   }
 }
