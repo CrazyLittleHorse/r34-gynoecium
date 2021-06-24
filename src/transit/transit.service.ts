@@ -69,7 +69,7 @@ export class TransitService {
       preview: post.preview_url,
       content: postType === 'image' ? post.sample_url : post.file_url,
       contentType: postType,
-      contentHeight: post.sample_height,
+      contentHeight: Number.parseInt(post.sample_height),
       tags: post.tags.split(' '),
       score: Number.parseInt(post.score),
     };
