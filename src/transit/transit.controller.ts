@@ -1,13 +1,13 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { TransitService } from './transit.service';
 
 @Controller('transit')
 export class TransitController {
   constructor(private readonly transitService: TransitService) {}
 
-  @Get('post')
-  post() {
-    return { result: true };
+  @Get('post/:id')
+  post(@Param('id') id: number) {
+    return this.transitService.getPosts({ id });
   }
 
   @Get('posts')
@@ -15,8 +15,9 @@ export class TransitController {
     @Query('limit') limit?: number,
     @Query('pid') pid?: number,
     @Query('tags') tags?: string,
+    @Query('id') id?: number,
   ) {
-    return this.transitService.getPosts({ limit, pid, tags });
+    return this.transitService.getPosts({ limit, pid, tags, id });
   }
 
   @Get('comments')
