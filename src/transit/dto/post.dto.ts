@@ -12,6 +12,7 @@ export interface PostDto {
   content: string;
   contentType: PostType;
   contentHeight: number;
+  contentWidth: number;
   tags: [string];
   score: number;
 }
