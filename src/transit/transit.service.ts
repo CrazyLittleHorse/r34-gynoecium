@@ -113,7 +113,7 @@ export class TransitService {
   }
 
   parsePostCount(rawTag: string): number {
-    const postCount: number = +/\d+/.exec(rawTag);
+    const postCount: number = Number.parseInt(rawTag.match(/\(([0-9]*)\)/)[1]);
     return postCount;
   }
 
