@@ -82,7 +82,7 @@ export class TransitService {
       convert.xml2json(data, { compact: true, spaces: 4 }),
     );
 
-    const posts = convertedData.posts.post;
+    const posts = convertedData.posts?.post;
     const postsDto: PostsDto = { posts: [] };
 
     if (posts === undefined) {
