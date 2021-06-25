@@ -70,7 +70,8 @@ export class TransitService {
       content: postType === 'image' ? post.sample_url : post.file_url,
       contentType: postType,
       contentHeight: Number.parseInt(post.sample_height),
-      tags: post.tags.split(' '),
+      contentWidth: Number.parseInt(post.sample_width),
+      tags: post.tags.replace(/\s+/g, ' ').trim().split(' '),
       score: Number.parseInt(post.score),
     };
     return postDto;
