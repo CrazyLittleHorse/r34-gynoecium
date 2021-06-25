@@ -106,6 +106,7 @@ export class TransitService {
     limit?: number;
     pid?: number;
     tags?: string;
+    id?: number;
   }): Promise<PostsDto> {
     const url = this.generateURL(ContentType.post, queries);
     const res = await this.httpService.get(url).toPromise();
