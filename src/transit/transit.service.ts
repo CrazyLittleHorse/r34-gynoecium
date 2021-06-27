@@ -26,7 +26,6 @@ export class TransitService {
   ): string {
     const host = 'https://rule34.xxx/';
     let url = `${host}index.php?page=dapi&s=${contentType}&q=index`;
-
     if (contentType === ContentType.post) {
       if (queries.limit) {
         url += `&limit=${queries.limit}`;
@@ -54,7 +53,7 @@ export class TransitService {
       }
     }
 
-    return url;
+    return encodeURI(url);
   }
 
   private getContentType(contentUrl: string): PostType {
