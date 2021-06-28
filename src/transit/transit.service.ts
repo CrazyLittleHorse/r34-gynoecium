@@ -128,6 +128,9 @@ export class TransitService {
 
   mapTags(tags: [{ label: string; value: string }]): SearchTagsDto {
     const tagsDto: SearchTagsDto = { tags: [] };
+
+    if (!tags.length) return tagsDto;
+
     tags.forEach((tag) => {
       const tagDto: TagDto = this.mapTag(tag);
       tagsDto.tags.push(tagDto);
@@ -162,7 +165,7 @@ export class TransitService {
       }),
     );
 
-    const comments = convertedComments.comments.comment;
+    const comments = convertedComments.comments?.comment;
     const commentsDto: CommentsDto = { comments: [] };
 
     if (comments === undefined) {
