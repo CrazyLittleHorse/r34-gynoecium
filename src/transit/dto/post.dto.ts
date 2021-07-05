@@ -15,6 +15,8 @@ export class PostDto {
   preview: string;
   @ApiProperty()
   content: string;
+  @ApiProperty()
+  contentFile: string;
   @ApiProperty({ enum: [PostType['.jpg'], PostType['.mp4']] })
   contentType: PostType;
   @ApiProperty()

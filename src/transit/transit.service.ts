@@ -66,7 +66,8 @@ export class TransitService {
     const postDto: PostDto = {
       id: Number.parseInt(post.id),
       preview: post.preview_url,
-      content: post.file_url,
+      content: post.sample_url,
+      contentFile: post.file_url,
       contentType: postType,
       contentHeight: Number.parseInt(post.sample_height),
       contentWidth: Number.parseInt(post.sample_width),
