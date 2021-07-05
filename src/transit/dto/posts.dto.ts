@@ -1,5 +1,7 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { PostDto } from './post.dto';
 
-export interface PostsDto {
+export class PostsDto {
+  @ApiProperty({ type: PostDto, isArray: true })
   posts: PostDto[];
 }
