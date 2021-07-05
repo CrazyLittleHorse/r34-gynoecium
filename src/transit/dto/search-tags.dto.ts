@@ -1,5 +1,7 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { TagDto } from './tag.dto';
 
-export interface SearchTagsDto {
+export class SearchTagsDto {
+  @ApiProperty({ type: TagDto, isArray: true })
   tags: TagDto[];
 }
