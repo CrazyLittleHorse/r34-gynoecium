@@ -73,6 +73,7 @@ export class TransitService {
       contentWidth: Number.parseInt(post.sample_width),
       tags: post.tags.replace(/\s+/g, ' ').trim().split(' '),
       score: Number.parseInt(post.score),
+      source: post?.source,
     };
     return postDto;
   }
