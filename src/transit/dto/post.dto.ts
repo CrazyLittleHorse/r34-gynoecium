@@ -27,6 +27,4 @@ export class PostDto {
   tags: [string];
   @ApiProperty()
   score: number;
-  @ApiProperty({ required: false })
-  source?: string;
 }
