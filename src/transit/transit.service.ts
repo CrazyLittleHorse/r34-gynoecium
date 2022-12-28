@@ -24,7 +24,7 @@ export class TransitService {
       q?: string;
     },
   ): string {
-    const host = 'https://rule34.xxx/';
+    const host = 'https://api.rule34.xxx/';
     let url = `${host}index.php?page=dapi&s=${contentType}&q=index`;
     if (contentType === ContentType.post) {
       if (queries.limit) {
